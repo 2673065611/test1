@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>深渊回响 · 灵魂阴影面纱</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', 'Songti SC', serif;
+            background: #0a0a0a;
+            color: #e0d8c0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 1rem;
+            background-image: radial-gradient(circle at 10% 20%, #1a1a1a 0%, #0a0a0a 90%);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid #3a3a3a;
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 0 1px #4a3f2e inset;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+            letter-spacing: 4px;
+            margin-bottom: 0.5rem;
+            color: #d4b68a;
+            text-shadow: 0 0 10px #8a6e4b;
+            font-weight: 300;
+            border-bottom: 1px solid #3a3a3a;
+            padding-bottom: 1rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-style: italic;
+            color: #9a8c76;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+        
+        .quote {
+            text-align: center;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-left: 3px solid #6a5e4a;
+            border-right: 3px solid #6a5e4a;
+            background: rgba(30, 30, 30, 0.6);
+            font-style: italic;
+            color: #c8bc9a;
+            font-size: 1.1rem;
+        }
+        
+        .progress {
+            width: 100%;
+            height: 4px;
+            background: #2a2a2a;
+            margin: 1.5rem 0;
+            border-radius: 2px;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #b89a6a;
+            width: 0%;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+        
+        .question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 16px;
+            border: 1px solid #3a3a3a;
+        }
+        
+        .question h3 {
+            color: #d0b084;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        
+        .question p {
+            margin-bottom: 1.2rem;
+            font-style: italic;
+            color: #b0a890;
+            font-size: 1.05rem;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1.2rem;
+            background: rgba(40, 40, 40, 0.8);
+            border: 1px solid #4a4a4a;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        
+        .option:hover {
+            background: rgba(60, 60, 60, 0.9);
+            border-color: #b89a6a;
+        }
+        
+        .option.selected {
+            background: rgba(100, 80, 50, 0.4);
+            border-color: #d4b68a;
+            box-shadow: 0 0 15px rgba(180, 140, 80, 0.3);
+        }
+        
+        .option input {
+            margin-right: 0.5rem;
+            accent-color: #b89a6a;
+            transform: scale(1.1);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0 1rem;
+        }
+        
+        button {
+            background: #2a2a2a;
+            color: #d0b084;
+            border: 1px solid #5a4e3a;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+            border-radius: 40px;
+            min-width: 120px;
+        }
+        
+        button:hover {
+            background: #3a3a3a;
+            border-color: #b89a6a;
+            color: #e8d0a0;
+            box-shadow: 0 0 15px rgba(180, 140, 80, 0.3);
+        }
+        
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .result-container {
+            margin-top: 1.5rem;
+            padding: 1.8rem;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #5a4e3a;
+            border-radius: 20px;
+        }
+        
+        .result-type {
+            font-size: 2.2rem;
+            color: #e8c68a;
+            text-align: center;
+            margin-bottom: 0.8rem;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px #a67c4a;
+            font-weight: 400;
+        }
+        
+        .result-sub {
+            text-align: center;
+            font-style: italic;
+            color: #b8aa8a;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            border-bottom: 1px dashed #4a3f2e;
+            padding-bottom: 1.2rem;
+        }
+        
+        .dimension-chart {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #1a1a1a;
+            border-radius: 16px;
+            border: 1px solid #3a3a3a;
+        }
+        
+        .dimension-chart h4 {
+            text-align: center;
+            color: #c8b084;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+        
+        .dimension-item {
+            margin-bottom: 1.2rem;
+        }
+        
+        .dimension-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.3rem;
+            color: #c8b894;
+            font-size: 1rem;
+        }
+        
+        .dimension-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: #2a2a2a;
+            border-radius: 4px;
+        }
+        
+        .dimension-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #6a5a3a, #d4b68a);
+            border-radius: 4px;
+            width: 0%;
+        }
+        
+        .analysis-section {
+            margin: 2.5rem 0;
+        }
+        
+        .analysis-block {
+            margin-bottom: 2rem;
+            padding: 1.2rem;
+            background: rgba(25, 25, 25, 0.7);
+            border-radius: 12px;
+            border-left: 4px solid #b89a6a;
+        }
+        
+        .analysis-block h4 {
+            color: #e0c084;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        
+        .analysis-block p {
+            color: #d0c4a8;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+        
+        .match-section {
+            margin: 2.5rem 0 1.5rem;
+            padding: 1.5rem;
+            background: #1e1a14;
+            border-radius: 16px;
+            border: 1px solid #6a5a3a;
+        }
+        
+        .match-section h4 {
+            font-size: 1.4rem;
+            color: #d8b88a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+        
+        .match-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        
+        .match-item {
+            padding: 1.2rem;
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 12px;
+            border: 1px solid #4a3f2e;
+        }
+        
+        .match-type {
+            font-size: 1.2rem;
+            color: #e8c68a;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+            border-bottom: 1px dotted #5a4e3a;
+            padding-bottom: 0.4rem;
+        }
+        
+        .match-desc {
+            color: #c8bc9a;
+            line-height: 1.7;
+            font-size: 0.98rem;
+        }
+        
+        .match-desc strong {
+            color: #e0b070;
+            font-weight: 400;
+        }
+        
+        .reset-btn {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto 0;
+            padding: 0.8rem 3rem;
+            background: transparent;
+            border: 1px solid #6a5e4a;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 2rem;
+            color: #6a5e4a;
+            font-size: 0.8rem;
+            border-top: 1px solid #2a2a2a;
+            padding-top: 1rem;
+        }
+        
+        .count-badge {
+            display: inline-block;
+            background: #3a3a3a;
+            color: #b89a6a;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .result-type {
+                font-size: 1.8rem;
+            }
+            button {
+                padding: 0.7rem 1.2rem;
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- 封面 -->
+        <div id="cover" :class="currentPage === 'cover' ? '' : 'hidden'">
+            <h1>◈ 深渊回响 ◈</h1>
+            <div class="subtitle">灵魂的阴影面纱</div>
+            <div class="quote">
+                “你害怕的从来不是黑暗，<br>而是黑暗中可能存在的自己。”
+            </div>
+            <div style="text-align: center; margin: 3rem 0;">
+                <button @click="startTest">▶ 进入深渊</button>
+            </div>
+            <div style="color: #6a5e4a; text-align: center; font-size: 0.9rem; margin-top: 2rem;">
+                🫸 18道题 · 看见你灵魂的另一面 🫷
+            </div>
+        </div>
+
+        <!-- 测试页 -->
+        <div id="test" :class="currentPage === 'test' ? '' : 'hidden'">
+            <div class="progress">
+                <div class="progress-bar" :style="{ width: (currentQuestionIndex / questions.length * 100) + '%' }"></div>
+            </div>
+            <div style="text-align: right; color: #8a7e6a; margin-bottom: 0.5rem; font-size: 0.95rem;">
+                第 {{ currentQuestionIndex }} / {{ questions.length }} 章
+            </div>
+
+            <div class="question">
+                <h3>{{ questions[currentQuestionIndex-1].title }}</h3>
+                <p>{{ questions[currentQuestionIndex-1].desc }}</p>
+                <div class="options">
+                    <div v-for="(option, idx) in questions[currentQuestionIndex-1].options" 
+                         :key="idx"
+                         class="option"
+                         :class="{ selected: answers[currentQuestionIndex-1] === String.fromCharCode(65 + idx) }"
+                         @click="selectOption(String.fromCharCode(65 + idx))">
+                        <input type="radio" 
+                               :name="'q' + currentQuestionIndex" 
+                               :value="String.fromCharCode(65 + idx)"
+                               :checked="answers[currentQuestionIndex-1] === String.fromCharCode(65 + idx)"
+                               @change="selectOption(String.fromCharCode(65 + idx))">
+                        <span>{{ option }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button @click="prevQuestion" :disabled="currentQuestionIndex === 1">← 上一章</button>
+                <button @click="nextQuestion" :disabled="!answers[currentQuestionIndex-1]">
+                    {{ currentQuestionIndex === questions.length ? '窥见深渊' : '下一章 →' }}
+                </button>
+            </div>
+        </div>
+
+        <!-- 结果页 -->
+        <div id="result" :class="currentPage === 'result' ? '' : 'hidden'">
+            <div class="result-type">{{ resultData.type }}</div>
+            <div class="result-sub">{{ resultData.subtitle }}</div>
+
+            <!-- 选项分布 -->
+            <div style="text-align: center; margin-bottom: 1.5rem; color: #9a8c76; font-size: 0.95rem;">
+                <span class="count-badge">A {{ answerCounts.A }}</span>
+                <span class="count-badge">B {{ answerCounts.B }}</span>
+                <span class="count-badge">C {{ answerCounts.C }}</span>
+                <span class="count-badge">D {{ answerCounts.D }}</span>
+            </div>
+
+            <!-- 多维阴影图谱 -->
+            <div class="dimension-chart">
+                <h4>⚭ 多维阴影图谱 ⚭</h4>
+                <div v-for="(value, key) in resultData.dimensions" :key="key" class="dimension-item">
+                    <div class="dimension-label">
+                        <span>{{ key }}</span>
+                        <span>{{ value }}/10</span>
+                    </div>
+                    <div class="dimension-bar-bg">
+                        <div class="dimension-bar" :style="{ width: (value * 10) + '%' }"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 详细解析 -->
+            <div class="analysis-section">
+                <div class="analysis-block">
+                    <h4>◈ 阴影的本质 · 深渊的低语</h4>
+                    <p>{{ resultData.nature }}</p>
+                </div>
+                
+                <div class="analysis-block">
+                    <h4>◈ 灵魂的起源 · 来处</h4>
+                    <p>{{ resultData.origin }}</p>
+                </div>
+                
+                <div class="analysis-block">
+                    <h4>◈ 潜在的危险 · 当阴影吞噬光明</h4>
+                    <p>{{ resultData.danger }}</p>
+                </div>
+                
+                <div class="analysis-block">
+                    <h4>◈ 成长的路径 · 与阴影共舞</h4>
+                    <p>{{ resultData.path }}</p>
+                </div>
+                
+                <div class="analysis-block">
+                    <h4>◈ 未被发现的天赋 · 深渊的馈赠</h4>
+                    <p>{{ resultData.gift }}</p>
+                </div>
+                
+                <div class="analysis-block">
+                    <h4>◈ 给这个世界的情诗 · 存在的意义</h4>
+                    <p>{{ resultData.poem }}</p>
+                </div>
+            </div>
+
+            <!-- 灵魂匹配（详细版） -->
+            <div class="match-section">
+                <h4>⟡ 灵魂匹配 · 与谁共舞深渊 ⟡</h4>
+                <div class="match-grid">
+                    <div class="match-item">
+                        <div class="match-type">【镜像吞噬者】</div>
+                        <div class="match-desc" v-html="resultData.match.A"></div>
+                    </div>
+                    <div class="match-item">
+                        <div class="match-type">【守夜人】</div>
+                        <div class="match-desc" v-html="resultData.match.B"></div>
+                    </div>
+                    <div class="match-item">
+                        <div class="match-type">【沉睡者】</div>
+                        <div class="match-desc" v-html="resultData.match.C"></div>
+                    </div>
+                    <div class="match-item">
+                        <div class="match-type">【门外的访客】</div>
+                        <div class="match-desc" v-html="resultData.match.D"></div>
+                    </div>
+                    <div class="match-item">
+                        <div class="match-type">【深渊调和者】</div>
+                        <div class="match-desc" v-html="resultData.match.E"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-btn" @click="resetTest">◈ 重返深渊 ◈</button>
+        </div>
+
+        <div class="footer-note">
+            ⚰️ 深渊回响 · 灵魂的阴影面纱 ⚰️
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                currentPage: 'cover',
+                currentQuestionIndex: 1,
+                answers: Array(18).fill(''),
+                questions: [
+                    {
+                        title: '第一幕 · 镜中幻影',
+                        desc: '午夜醒来，经过一面镜子时，你瞥见镜中自己的倒影没有跟随你的动作。它静止不动，只是直直地盯着你。你的第一反应是：',
+                        options: ['A. 缓缓靠近，想看清它眼中藏着什么', 'B. 迅速移开视线，假装什么都没发生', 'C. 对着镜子微笑，挑衅地等待它回应', 'D. 砸碎镜子，让那个倒影彻底消失']
+                    },
+                    {
+                        title: '第二幕 · 废弃教堂',
+                        desc: '你走进一座废弃的教堂，穹顶的彩绘玻璃已经破碎。阳光透过缺口洒下，在地面投出斑驳的光影。你最想在哪个位置站定：',
+                        options: ['A. 正中央那道最亮的光柱下，闭上眼感受温暖', 'B. 角落里最深的阴影中，观察光柱里的尘埃飞舞', 'C. 破碎的圣坛前，触摸那些被遗弃的烛台', 'D. 门口，一只脚在里，一只脚在外，随时准备离开']
+                    },
+                    {
+                        title: '第三幕 · 雨夜访客',
+                        desc: '暴雨倾盆的深夜，有人敲响你的门。透过猫眼，你看到一个人浑身湿透，面容模糊不清。他说他认识你，但你想不起他是谁。你会：',
+                        options: ['A. 开门让他进来，给他一条干毛巾和热茶', 'B. 隔着门问他名字，直到确认他的身份', 'C. 不开门，但隔着门陪他说话，直到雨停', 'D. 假装不在家，关掉所有灯，等待他离开']
+                    },
+                    {
+                        title: '第四幕 · 梦中之梦',
+                        desc: '你在梦中意识到自己在做梦，但无论如何都无法醒来。这时，梦境中的某个声音对你说：“你不想知道，醒着的你是什么样子吗？”你：',
+                        options: ['A. 追问那个声音，渴望看到真实的自己', 'B. 害怕了，拼命掐自己，试图醒来', 'C. 接受这个状态，开始在梦中探索这个只有你的世界', 'D. 质问那个声音是谁，凭什么窥视你']
+                    },
+                    {
+                        title: '第五幕 · 古老书卷',
+                        desc: '你发现了一本古老的羊皮书卷，封面没有标题。翻开第一页，上面用褪色的墨水写着一句话。这句话最可能是：',
+                        options: ['A. “你害怕的从来不是黑暗，而是黑暗中可能存在的自己”', 'B. “所有秘密都会在第七个满月之夜开口说话”', 'C. “记住：你杀死的东西，都会在你的梦里复活”', 'D. “门已经打开，但你从未离开”']
+                    },
+                    {
+                        title: '第六幕 · 密道尽头',
+                        desc: '在老宅的壁橱后面，你发现了一条密道。尽头有两扇门，你必须选择一扇推开：',
+                        options: ['A. 黑色的门，门缝里透出微弱的光，隐约有音乐传来', 'B. 白色的门，门上挂着一面镜子，映出你此刻的表情', 'C. 红色的门，门板温热，像是有生命在呼吸', 'D. 没有颜色的门，门把手是冰冷的，推开门后是一片虚无']
+                    },
+                    {
+                        title: '第七幕 · 童年记忆',
+                        desc: '你翻出一张童年的照片，照片里的你正对着镜头笑。但你突然想起，拍这张照片的那天，你其实非常难过。你认为照片里的笑容是：',
+                        options: ['A. 为了让拍照的人开心而勉强挤出来的', 'B. 连你自己都骗过去的伪装，记忆已经模糊了', 'C. 笑容是真的，只是现在的你无法理解当时的快乐', 'D. 照片里的那个孩子根本不是真正的你']
+                    },
+                    {
+                        title: '第八幕 · 林中木屋',
+                        desc: '森林深处有一座无人居住的木屋，你推门而入。窗台上放着一只玻璃瓶，瓶子里装着：',
+                        options: ['A. 一撮灰烬，旁边贴着标签：“上一次心动”', 'B. 一只干枯的蝴蝶，翅膀上还有微弱的光泽', 'C. 一封没有拆封的信，收件人是你但笔迹陌生', 'D. 空瓶子，但瓶盖上刻着：“等你来填满”']
+                    },
+                    {
+                        title: '第九幕 · 最后的晚餐',
+                        desc: '你被邀请参加一场晚宴，桌上坐着六个人，但你只认识其中一个。那个人对你说：“今晚，有一个人不会活着离开这张桌子。”你的反应是：',
+                        options: ['A. 仔细观察每个人，试图找出谁是目标', 'B. 默默计算自己逃出去的几率', 'C. 若无其事地继续吃饭，仿佛没听见', 'D. 质问说话的人，为什么要告诉你这个']
+                    },
+                    {
+                        title: '第十幕 · 暗河渡船',
+                        desc: '你站在一条地下暗河的岸边，一个披着斗篷的船夫撑着船靠岸。他说可以渡你过河，但代价是留下一样东西。你愿意留下：',
+                        options: ['A. 你关于童年的全部记忆', 'B. 你最爱的一个人的名字', 'C. 你对明天的所有期待', 'D. 你的倒影（从此以后你将没有影子）']
+                    },
+                    {
+                        title: '第十一幕 · 禁闭的房间',
+                        desc: '你住在一间有七扇门的房子里，其中六扇你可以自由进出，第七扇门永远紧锁。有一天，你发现第七扇门虚掩着。你会：',
+                        options: ['A. 立刻推门进去，看看里面藏着什么', 'B. 先确认其他房间都安全，再慢慢靠近那扇门', 'C. 关上门，假装没看见，继续过原来的生活', 'D. 站在门口朝里看，但不踏进去']
+                    },
+                    {
+                        title: '第十二幕 · 陌生来电',
+                        desc: '凌晨三点，电话响起。接起来，那边沉默了很久，然后一个声音说：“我知道你做过什么。”你脑海中第一个浮现的是：',
+                        options: ['A. 一件你一直愧疚但从未告诉任何人的小事', 'B. 一个你幻想过但从不敢实施的念头', 'C. 你最近对某个人产生的恶意的想法', 'D. 一片空白，但心跳已经开始加速']
+                    },
+                    {
+                        title: '第十三幕 · 悬崖边缘',
+                        desc: '你站在悬崖边缘，脚下是万丈深渊。风吹得你几乎站不稳。此时你最想听到的一句话是：',
+                        options: ['A. “跳下去，你会飞。”', 'B. “后退一步，回到我身边。”', 'C. “你站在那里的样子，很美。”', 'D. 什么都不想听，只想一个人静静站着']
+                    },
+                    {
+                        title: '第十四幕 · 葬礼上的陌生人',
+                        desc: '你去参加一个亲人的葬礼，人群中出现一个陌生的面孔。他/她一直在看你，眼神复杂。你认为他/她是：',
+                        options: ['A. 死者生前隐藏的恋人，来送最后一程', 'B. 你的某个人格，终于在这一天现身', 'C. 死神本神，来带走下一个该走的人', 'D. 一个走错门的陌生人，却不愿离开']
+                    },
+                    {
+                        title: '第十五幕 · 午夜动物园',
+                        desc: '你独自在午夜走进一座废弃的动物园。所有的笼子都空着，但你能感觉到有眼睛在黑暗中注视你。最让你不安的是：',
+                        options: ['A. 那些眼睛可能来自被你伤害过的人', 'B. 那些眼睛可能来自你内心深处囚禁的野兽', 'C. 那些眼睛可能根本不存在，只是你的想象', 'D. 那些眼睛可能正在等待你打开笼子']
+                    },
+                    {
+                        title: '第十六幕 · 最后的遗言',
+                        desc: '如果你只能对这个世界说最后一句话，这句话会被刻在你的墓碑上。你希望它是：',
+                        options: ['A. “我终于自由了。”', 'B. “对不起，我试过了。”', 'C. “别难过，我从未真正存在过。”', 'D. 留白，什么都不刻']
+                    },
+                    {
+                        title: '第十七幕 · 深渊回望',
+                        desc: '你终于站在了深渊的边缘，低头望去。你看到的不再是黑暗，而是：',
+                        options: ['A. 无数双眼睛，都在向上看着你', 'B. 你自己的倒影，但它在微笑', 'C. 一片星空，比夜空更璀璨', 'D. 什么都没有，深渊只是深渊']
+                    },
+                    {
+                        title: '第十八幕 · 黎明前的选择',
+                        desc: '天快亮了，你必须离开这片黑暗之地。临走前，你被允许带走一样东西作为纪念。你会选择：',
+                        options: ['A. 一块镜子的碎片，可以照见任何人的真实面目', 'B. 一颗不会熄灭的黑色火焰，但它会灼伤你的手', 'C. 一把钥匙，但你不知道它能打开哪扇门', 'D. 什么都不带，干干净净地离开']
+                    }
+                ]
+            },
+            computed: {
+                answerCounts() {
+                    const counts = { A: 0, B: 0, C: 0, D: 0 };
+                    this.answers.forEach(a => { if (a) counts[a]++; });
+                    return counts;
+                },
+                resultData() {
+                    const counts = this.answerCounts;
+                    const total = this.answers.filter(a => a).length;
+                    
+                    // 默认返回（未完成测试）
+                    if (total < 18) {
+                        return {
+                            type: '【等待深渊回响】',
+                            subtitle: '请先完成全部18道题目',
+                            nature: '完成测试后，你将在这里看见自己的阴影人格。',
+                            origin: '——',
+                            danger: '——',
+                            path: '——',
+                            gift: '——',
+                            poem: '——',
+                            dimensions: {
+                                '阴影深度': 0,
+                                '控制欲望': 0,
+                                '伪装指数': 0,
+                                '孤独耐受': 0,
+                                '危险引力': 0
+                            },
+                            match: {
+                                A: '请先完成测试',
+                                B: '请先完成测试',
+                                C: '请先完成测试',
+                                D: '请先完成测试',
+                                E: '请先完成测试'
+                            }
+                        };
+                    }
+
+                    // 确定类型
+                    const maxCount = Math.max(counts.A, counts.B, counts.C, counts.D);
+                    const types = [];
+                    if (counts.A === maxCount) types.push('A');
+                    if (counts.B === maxCount) types.push('B');
+                    if (counts.C === maxCount) types.push('C');
+                    if (counts.D === maxCount) types.push('D');
+
+                    let typeKey = '';
+                    if (types.length > 1) typeKey = 'E'; // 调和者
+                    else if (types[0] === 'A') typeKey = 'A';
+                    else if (types[0] === 'B') typeKey = 'B';
+                    else if (types[0] === 'C') typeKey = 'C';
+                    else if (types[0] === 'D') typeKey = 'D';
+
+                    // 计算维度
+                    const shadowDepth = Math.min(10, Math.round((counts.A * 1.5 + counts.C * 0.5) / 18 * 10));
+                    const control = Math.min(10, Math.round((counts.B * 1.2 + counts.D * 0.8) / 18 * 10));
+                    const mask = Math.min(10, Math.round((counts.C * 1.3 + counts.A * 0.7) / 18 * 10));
+                    const solitude = Math.min(10, Math.round((counts.D * 1.4 + counts.B * 0.6) / 18 * 10));
+                    const danger = Math.min(10, Math.round((counts.A + counts.B + counts.C + counts.D) / 18 * 8 + 2));
+
+                    const dimensions = {
+                        '阴影深度': shadowDepth,
+                        '控制欲望': control,
+                        '伪装指数': mask,
+                        '孤独耐受': solitude,
+                        '危险引力': danger
+                    };
+
+                    // 完整解析数据
+                    const results = {
+                        'A': {
+                            type: '【镜像吞噬者】',
+                            subtitle: '“你害怕的从来不是镜子，而是镜中那个不跟随你动作的倒影。”',
+                            nature: '你的阴影人格是一位贪婪的收藏家，终生致力于收集自己的每一面镜子。你无法忍受表面的平静，总是试图揭开每一层伪装，包括你自己的。这种对真实的执念让你成为一个深刻的自我探索者，但也让你像一个永远无法满足的深渊，需要吞噬越来越多的自我认知才能维持平衡。你渴望看清自己的每一面，哪怕是最不堪的那些——因为对你而言，未知比黑暗更可怕。',
+                            origin: '你出生在一个需要多重面具才能生存的环境。也许童年时，你必须学会在不同的成年人面前扮演不同的自己；也许你曾经因为展现真实的一面而受过伤害。从那时起，你就在内心深处种下了一颗种子：只有看清所有的自己，才能保护真正的自己。你的阴影是那个在暗处帮你收集面具的孩子，他/她从未长大，也从未停止工作。',
+                            danger: '当你过度沉浸在自我审视中，你会陷入“镜像迷宫”——在无数个自我倒影中迷失方向，分不清哪个是本源，哪个是投影。这种状态下，你可能会对自己产生陌生感，甚至做出违背本心的行为，只为了观察“那个自己会怎么做”。最危险的是，你可能会开始享受这种分裂，把自我撕裂当成一种艺术，而忘记了碎片之下的血肉之躯正在流血。',
+                            path: '你需要学会的不是停止探索，而是在探索中找到一个锚点。这个锚点可以是一个你无论如何都不会质疑的核心价值，也可以是一个无论经历多少变化都愿意接纳你的人。每天给自己一个“不审视”的时刻——只是存在，不去分析，不去解读，不去收集。让镜子只映照，不吞噬；让倒影存在，但不喧宾夺主。试着对镜子里的那个自己说：“我看见你了，但今天，我不需要知道你是谁。”',
+                            gift: '你是天生的心理学家、诗人和艺术家。你能洞察人心最深处的动机，能描绘出别人看不到的情感纹理。当别人还在迷雾中摸索时，你已经看见了整座迷宫的图纸。你的作品（无论是文字、图像还是思想）总能让读者在其中看见自己的影子。当你学会驾驭这种能力而不被其吞噬，你将成为一个能照亮他人黑暗的灯塔，而不是一个永远凝视深渊的迷失者。',
+                            poem: '“你是那面永不满足的镜子，想要映照整个宇宙。但别忘了，最深的真理往往藏在最浅的表象里。有时，一滴露水比整片海洋更能照见阳光。”',
+                            dimensions: dimensions,
+                            match: {
+                                A: '<strong>【镜像吞噬者】×【镜像吞噬者】</strong><br>你们像两面相对的镜子，创造出无限延伸的深度。这种组合能产生惊人的共鸣，彼此都能理解对方对真实的渴求。你们不会害怕彼此的阴影，反而会被对方的复杂深深吸引。但危险在于：你们可能陷入“谁更了解谁”的竞赛，在无限反射中失去边界。相处之道：约定一个“停止反射”的信号，学会欣赏表面而不总是追求深度。',
+                                B: '<strong>【镜像吞噬者】×【守夜人】</strong><br>你渴望深入探索，他/她保持安全观察。你是一团想要燃烧一切的火，他/她是一盏只想照明的灯。你们能形成奇妙的互补——你需要他/她的稳定来避免迷失，他/她需要你的勇气来走近阴影。但你可能觉得他/她太保守，他/她可能觉得你太危险。相处之道：尊重彼此的节奏，不要强求对方进入不愿进入的领域。',
+                                C: '<strong>【镜像吞噬者】×【沉睡者】</strong><br>你被沉睡者的纯真吸引，他/她被你的深度吸引。这是一场光明与黑暗的邂逅，充满诗意的张力。但你可能无意中唤醒他/她不愿面对的阴影，而他/她可能承受不了你的深度而选择逃离。相处之道：放慢脚步，允许他/她以自己的节奏觉醒。温柔地照亮，而非猛烈地唤醒。',
+                                D: '<strong>【镜像吞噬者】×【门外的访客】</strong><br>你渴望进入他/她的内心世界，他/她则被你的真诚吸引。你像一把钥匙，他/她像一扇永远虚掩的门。你们之间充满了探索的张力，每一次靠近都是一场冒险。但你可能因为他/她始终无法完全进入关系而感到挫败。相处之道：接受他/她的边界感，不强求“完全进入”。让他/她为你留一盏灯，但不要求他/她开门。',
+                                E: '<strong>【镜像吞噬者】×【深渊调和者】</strong><br>调和者内心住着一个议会，而你渴望探访每一个房间。你们之间可能产生最丰富的对话——你帮他/她梳理内在的声音，他/她帮你看见自己的完整性。但你也可能因为他/她的复杂性而感到疲惫。相处之道：不要试图掌控他/她的所有声音，学会欣赏他/她的多元与矛盾。'
+                            }
+                        },
+                        'B': {
+                            type: '【守夜人】',
+                            subtitle: '“你在黑暗中守望，却从不踏入黑暗。”',
+                            nature: '你的阴影人格是一位警惕的守卫，它站在你内心世界与外部阴影的交界处，日夜巡逻。你拥有敏锐的洞察力，能轻易察觉他人和自身的阴暗面，但你选择了一条不同的路——看见但不靠近，知晓但不深究。这种克制源于你对失控的深深恐惧。你宁愿在安全距离外观察黑暗，也不愿踏入半步。你的力量不在于直面阴影，而在于永不转身。',
+                            origin: '你曾经踏入过黑暗。也许是一次过于深刻的信任，也许是一次毫无保留的付出，也许是一次让你至今仍在午夜惊醒的背叛。从那以后，你就在内心深处建造了一座瞭望塔。你告诉自己：只要不靠近，就不会再受伤。你的阴影是那个在塔顶彻夜不眠的守望者，他/她的眼睛从未离开过地平线，但也从未离开过塔楼。',
+                            danger: '长期处于“看见但不进入”的状态，会让你逐渐失去与自己阴影的连接。被压抑的黑暗不会消失，只会在你看不见的地方积聚。终有一天，它可能会以你无法控制的方式爆发——或者更糟，它会让你变得冷漠，失去对任何事物的深度感受能力。当你守夜太久，你会忘记自己也是黑夜的一部分。',
+                            path: '你不需要立刻跳进深渊，但可以尝试偶尔走近一点。给自己设定一些“安全探索区”——在日记里写下那些你平时不敢承认的念头，在一个安全的关系中分享你最隐秘的恐惧，或者在深夜里允许自己流泪而不问原因。让守夜人偶尔休息一下，让阴影有机会在可控的范围内呼吸。试着对那个守望者说：“谢谢你保护我这么久。今晚，让我来守夜，你去睡一会儿。”',
+                            gift: '你是天生的保护者、调解人和边界守护者。你能够感知危险而不被危险吞噬，能够理解黑暗而不被黑暗同化。你能在混乱中保持清醒，在风暴中找到锚点。当你学会适度地与自己阴影对话，你将成为一个既温柔又强大的人——既能守护他人，也能守护自己；既能看见深渊，也能远离深渊。你是别人眼中的灯塔，也是自己心中的港湾。',
+                            poem: '“你是那座永不熄灭的灯塔，为迷航者照亮归途。但别忘了，灯塔也需要休息。有时，熄灭所有的光，才能看见真正的星空。”',
+                            dimensions: dimensions,
+                            match: {
+                                A: '<strong>【守夜人】×【镜像吞噬者】</strong><br>你保持观察，他/她渴望深入。你是一盏灯，他/她是一团火。你们能形成奇妙的互补——他/她需要你的稳定来避免迷失，你需要他/她的勇气来走近阴影。但你可能觉得他/她太危险，他/她可能觉得你太保守。相处之道：偶尔放下警惕，跟随他/她进行一次冒险；同时也要教会他/她，观察也是一种参与。',
+                                B: '<strong>【守夜人】×【守夜人】</strong><br>你们互相理解彼此的谨慎，尊重对方的边界。这是一段冷静而深刻的关系，像两个并肩站立的守望者，共同注视着同一个方向。你们不会互相催促，不会强求对方踏入不愿进入的领域。但危险在于：可能因为过于克制而缺乏激情，双方都在等待对方先迈出一步。相处之道：定期创造一些“越界”的时刻，哪怕只是小小的冒险。让彼此知道，偶尔放下警惕，世界不会崩塌。',
+                                C: '<strong>【守夜人】×【沉睡者】</strong><br>你的警惕给他/她带来安全感，他/她的乐观让你感到放松。你像一座灯塔，他/她像一艘在平静海面上航行的船。这是一段温和而滋养的关系，充满温柔的守护。但你可能因为过度保护而限制他/她的成长，他/她可能因为太过天真而无法理解你的担忧。相处之道：学会偶尔放手，让他/她在安全范围内体验一些风险；也让他/她看见你眼中那个有时过于警惕的世界。',
+                                D: '<strong>【守夜人】×【门外的访客】</strong><br>你站在光明与黑暗的边界，他/她永远在门口徘徊。你们都在边缘地带生活，彼此能理解那种“既不在此也不在彼”的状态。你们可以分享关于“边界”的一切秘密。但危险在于：可能陷入“谁先跨过门槛”的僵局，两个都不敢真正进入关系的人，很难建立深度的连接。相处之道：轮流扮演“跨门者”的角色。这次你进来，下次我出去。让边缘变成一个可以流动的空间。',
+                                E: '<strong>【守夜人】×【深渊调和者】</strong><br>调和者内心住着一个议会，而你擅长观察而不介入。你们之间可以形成一种安静的默契——你倾听他/她所有的声音，却不评判，不干预。这是最安全的港湾。但你也可能因为过度克制而让他/她感到疏离。相处之道：偶尔也让他/她听见你的声音，而不仅仅是你的沉默。'
+                            }
+                        },
+                        'C': {
+                            type: '【沉睡者】',
+                            subtitle: '“你的黑暗面还在沉睡，但偶尔会在梦中翻身。”',
+                            nature: '你的阴影人格像一个沉睡的孩子，安静地蜷缩在你心灵最深处的房间。你不常感知它的存在，甚至可能否认它的存在。你习惯用善意和乐观过滤世界，这让你的生活看起来平静而美好，但也让你错过了一部分关于自己和世界的真相。你的阴影不是不存在，只是还在等待一个被唤醒的时刻——也许是深夜的一滴泪，也许是一句刺耳的真话，也许是一个让你无法再逃避的人。',
+                            origin: '你曾经被保护得很好，或者你选择性地遗忘了那些不够美好的记忆。也许童年时，有人替你挡住了世界的恶意；也许你曾经历过难以承受的痛苦，于是你的灵魂选择把那些记忆锁进地下室，并把钥匙扔进海里。你的阴影是那个被锁在地下室的孩子，他/她不吵不闹，安静地睡着，但偶尔会在梦中翻身，让你在清晨醒来时感到莫名的悲伤。',
+                            danger: '沉睡者终有醒来的一天。当生活不可避免地带来痛苦、背叛或失望时，你长期压抑的阴影可能会猛然苏醒，用你完全不熟悉的方式表达自己。你可能会做出让自己都惊讶的事情，或者陷入深深的自我怀疑：“原来我也会这样？” 最危险的是，当阴影终于醒来时，你可能不知道如何与它相处，因为它对你而言太过陌生。',
+                            path: '唤醒阴影不需要一场革命，只需要一次温和的对话。试着在独处时问自己：“如果我可以对某个人产生最坏的念头，那个人会是谁？为什么？” 允许自己拥有那些“不该有”的情绪，它们不会定义你，但否认它们会让你失去对自己的完整认知。每天给自己五分钟，做一个“不乐观”的人——允许自己愤怒、嫉妒、悲伤，而不必为此感到羞愧。试着对那个沉睡的孩子说：“你可以醒来，我不会怪你。”',
+                            gift: '你是天生的疗愈者、希望携带者和光的守护者。你的乐观不是无知，而是一种深刻的选择。当你学会在保持善良的同时接纳自己的阴影，你的疗愈力将拥有真正的深度——你能安慰的不再只是那些和你一样阳光的人，还有那些在黑暗中挣扎的灵魂，因为你知道黑暗的轮廓，即使你从未踏入。你会成为那种“在暴风雨中依然相信天晴”的人，而你的相信会让别人也愿意相信。',
+                            poem: '“你是那个在春天沉睡的孩子，梦里全是花开。但别忘了，泥土之下也有根须在黑暗中生长。它们不曾见过光，却支撑着你看过的每一朵花。”',
+                            dimensions: dimensions,
+                            match: {
+                                A: '<strong>【沉睡者】×【镜像吞噬者】</strong><br>你的纯真吸引着他/她，他/她的深度吸引着你。这是一场光明与黑暗的邂逅，像月光与深渊的对话。但他/她可能无意中唤醒你不愿面对的阴影，而你可能因为承受不了他/她的深度而选择逃离。相处之道：让他/她知道你的边界，也允许自己偶尔踏入他/她的世界看一看。温柔地睁开眼，而非恐惧地转身。',
+                                B: '<strong>【沉睡者】×【守夜人】</strong><br>你的乐观让他/她感到放松，他/她的警惕给你带来安全感。你像一艘船，他/她像一座灯塔。这是一段温和而滋养的关系，充满温柔的守护。但他/她可能因为过度保护而限制你的成长，你可能因为太过天真而无法理解他/她的担忧。相处之道：让他/她知道你也需要体验一些风险，也试着看见他/她眼中那个有时过于警惕的世界。',
+                                C: '<strong>【沉睡者】×【沉睡者】</strong><br>这是一段阳光明媚的关系，你们一起选择看见世界美好的一面。你们互相温暖，彼此照亮，像两个一起晒太阳的孩子。你们的关系充满信任和柔软。但危险在于：当真正的阴影来临时，你们可能都没有应对的能力。一次共同的创伤可能会摧毁你们共同建造的纯真世界。相处之道：一起学习温柔地面对阴影。从看一部悲伤的电影开始，从讨论一个让你们不安的话题开始。让你们的阳光小屋也能容纳偶尔的雨天。',
+                                D: '<strong>【沉睡者】×【门外的访客】</strong><br>你被他/她的神秘吸引，他/她被你的单纯吸引。这是一段童话与现实相遇的关系，像森林与迷雾的相遇。但你可能永远等不到他/她真正进入的那一天，他/她可能因为你的期待而感到压力。相处之道：接受他/她的本性，不强求对方变成“常住居民”。享受他/她偶尔的停留，而不期待永远的陪伴。',
+                                E: '<strong>【沉睡者】×【深渊调和者】</strong><br>调和者内心住着一个议会，而你代表着其中最单纯的声音。你会被调和者的复杂性吸引，因为那正是你未曾探索的世界。调和者会被你的纯粹打动，因为那是他/她内心深处最渴望的宁静。相处之道：让他/她带你探索世界，你带他/她回到简单。你们可以成为彼此的向导。'
+                            }
+                        },
+                        'D': {
+                            type: '【门外的访客】',
+                            subtitle: '“你既不在光明中，也不在黑暗里。你永远站在门口。”',
+                            nature: '你的阴影人格是一位永恒的徘徊者，永远站在门槛上，既不进入，也不离开。你是一个永恒的边界居民——既不完全接纳光明，也不彻底拥抱黑暗；既不完全真实，也不完全伪装。这种游离状态让你拥有惊人的适应力，但也让你始终无法在任何一方找到归属。你可以是任何人，所以你也可能谁都不是。你的力量在于自由，你的诅咒在于无处可归。',
+                            origin: '你曾经试图进入某扇门，但那扇门在你身后关上了。也许你被拒绝过，也许你被抛弃过，也许你曾经走进一个地方却发现那不是你该来的。从那以后，你就学会了永远不要完全进入。你站在门口，随时准备离开，也随时准备进入——但最终，你只是站着。你的阴影是那个永远在等待的旅人，他/她的行李从未完全打开，也从未完全收拾。',
+                            danger: '长期处于“门口”状态，会让你逐渐失去与任何一方的深度连接。你可能变得难以承诺、难以信任、难以真正投入任何关系或事业。因为只要你一直站在门口，就永远不必面对进入后的未知，也不必承受离开后的遗憾。但这种自由，也是一种最深的囚禁。最危险的是，你可能有一天会发现，门口已经成了你的整个世界，而门里门外都成了陌生的远方。',
+                            path: '你需要做的不是选择光明或黑暗，而是学会在门口安家。接受自己永远在边界上的事实，把这种“边缘性”变成你的家园。你可以成为连接两个世界的桥梁，而不是一个永远犹豫不决的徘徊者。给自己一个承诺：无论站在哪里，都要全然地站在那里。试着对那个徘徊者说：“这里也可以是一个家。你不必再等了。”',
+                            gift: '你是天生的翻译者、桥梁建造者和边界诗人。你能理解光明与黑暗两种语言，能在对立面之间找到沟通的渠道。当别人陷入二元对立的争吵时，你能看见第三条路；当两个世界互相仇恨时，你能成为那个传递消息的信使。当你不再为自己的“游离”而焦虑，你将成为一个能连接不同世界的使者——既不属于这里，也不属于那里，但正因为如此，你属于所有地方。',
+                            poem: '“你是那个永远站在门口的人，手里握着一把不属于任何门的钥匙。但别忘了，门槛本身也是一个地方。你站着的那个位置，就是你的国度。”',
+                            dimensions: dimensions,
+                            match: {
+                                A: '<strong>【门外的访客】×【镜像吞噬者】</strong><br>他/她渴望进入你的内心世界，你被他/她的真诚吸引。你像一扇虚掩的门，他/她像一把执着的钥匙。你们之间充满了探索的张力，每一次靠近都是一场冒险。但他/她可能因为你始终无法完全进入关系而感到挫败。相处之道：让他/她知道你的边界不是拒绝，而是保护。为他/她留一盏灯，但不强求自己开门。',
+                                B: '<strong>【门外的访客】×【守夜人】</strong><br>你永远在门口徘徊，他/她永远在边界守望。你们都在边缘地带生活，彼此能理解那种“既不在此也不在彼”的状态。你们可以分享关于“边界”的一切秘密，成为彼此唯一的同类。但危险在于：可能陷入“谁先跨过门槛”的僵局。相处之道：轮流扮演“跨门者”的角色。这次你进来，下次我出去。让边缘变成一个可以流动的空间。',
+                                C: '<strong>【门外的访客】×【沉睡者】</strong><br>你的神秘吸引着他/她，他/她的单纯吸引着你。这是一段童话与现实相遇的关系，像迷雾与森林的相遇。但你可能因为他/她的期待而感到压力，他/她可能永远等不到你真正进入的那一天。相处之道：让他/她知道你的徘徊不是拒绝，而是本性。享受你偶尔的停留，而不期待永远的陪伴。',
+                                D: '<strong>【门外的访客】×【门外的访客】</strong><br>你们互相理解那种永远在边缘的孤独，也尊重彼此的自由。这是一段轻盈而深刻的关系，像两阵风，时而相遇，时而分离。你们不需要承诺，因为你们都知道承诺的重量；你们也不需要永恒，因为你们都在享受此刻的相遇。但危险在于：可能因为双方都太过自由而失去连接的锚点。相处之道：创造属于你们的仪式，哪怕只是每周一次共处的夜晚。让门口也可以是一个可以暂时安家的地方。',
+                                E: '<strong>【门外的访客】×【深渊调和者】</strong><br>调和者内心住着一个议会，而你永远站在门外倾听。你会被他/她的丰富吸引，因为每一个声音都像一扇不同的门；他/她会被你的自由打动，因为那是他/她内心所有声音都渴望的状态。相处之道：你可以成为他/她所有声音的倾听者，让他/她成为你偶尔想要停留的理由。'
+                            }
+                        },
+                        'E': {
+                            type: '【深渊调和者】',
+                            subtitle: '“你不是一个人，你是一群人。”',
+                            nature: '你的内心不是一个单一的存在，而是一个多元的议会。镜像吞噬者、守夜人、沉睡者、门外的访客——这些不同的声音都在你的内心占有一席之地，有时和谐共处，有时激烈争论。你的阴影不是一个，而是一群。这让你拥有最丰富的内心景观，也让你面临最复杂的内在冲突。你可以在一天之内经历四季，也可以在一个人身上看见众生。你的力量在于完整，你的挑战在于整合。',
+                            origin: '你经历过太多，或者你感受得太深。也许你曾经在不同的人生阶段扮演过不同的角色，也许你天生就是一块海绵，吸收着来自四面八方的情绪和经验。你的内心是一个没有锁的房间，每一个路过的灵魂都可以进来坐坐，有些人甚至留下来，成了你的一部分。你的阴影是所有这些住客的集合，他们有时一起开会，有时各自沉默。',
+                            danger: '当内心的议会无法达成共识，你会陷入严重的内耗。不同的声音争夺主导权，让你难以做出决定，难以找到平静。你可能会在一天之内经历多种情绪的剧烈波动，或者在不同场合展现截然不同的自己，直到连自己都感到陌生。最危险的是，你可能永远在寻找那个“真正的自己”，却没有意识到，你所有的声音加在一起，才是那个真正的自己。',
+                            path: '你需要的不再是探索更多的自我，而是学会如何主持内心的议会。给每一个声音发言的机会，但也要建立决策的机制。你可以尝试给内心的不同部分命名，写日记让它们轮流表达，然后找到那个能整合所有声音的“议长”——那才是你真正的核心自我。试着对那个议会说：“我听见你们所有人。现在，让我们一起做一个决定。”',
+                            gift: '你是天生的整合者、创造者和灵魂的诗人。你能容纳矛盾，能在对立中找到和谐，能在混乱中发现秩序。当别人只能看见事物的一个侧面时，你已经看见了它的整体。你拥有最丰富的内心世界，也能创造出最动人的作品。当你学会主持内心的多元声音，你将成为一个真正完整的人——你拥有光明的温暖，也拥有黑暗的深度；你能保持警惕，也能偶尔沉睡；你站在门口，但也敢于踏入未知。这种完整性，让你成为最复杂也最迷人的人。',
+                            poem: '“你不是一个人，你是一群人；你不是一条河，你是一片海。所有的矛盾在你这里和解，所有的声音在你这里共鸣。你不需要选择成为谁，因为你是所有人。”',
+                            dimensions: dimensions,
+                            match: {
+                                A: '<strong>【深渊调和者】×【镜像吞噬者】</strong><br>你内心住着一个议会，他/她渴望探访每一个房间。你们之间可能产生最丰富的对话——他/她帮你梳理内在的声音，你帮他/她看见自己的完整性。但你也可能因为他/她的专注而感到压力，他/她可能因为你的复杂性而感到疲惫。相处之道：让他/她知道你不需要被完全理解，只需要被看见。你也不试图改变他/她，而是欣赏他/她的执着。',
+                                B: '<strong>【深渊调和者】×【守夜人】</strong><br>你内心住着一个议会，他/她擅长观察而不介入。你们之间可以形成一种安静的默契——他/她倾听你所有的声音，却不评判，不干预。这是最安全的港湾。但你有时可能因为他/她的克制而感到疏离。相处之道：偶尔邀请他/她进入你的内心，也学会倾听他/她的沉默。沉默也是一种声音。',
+                                C: '<strong>【深渊调和者】×【沉睡者】</strong><br>你内心住着一个议会，他/她代表着其中最单纯的声音。你会被他/她的纯粹打动，因为那是你内心深处最渴望的宁静；他/她会被你的复杂性吸引，因为那正是他/她未曾探索的世界。相处之道：你带他/她探索世界，他/她带你回到简单。你们可以成为彼此的向导。',
+                                D: '<strong>【深渊调和者】×【门外的访客】</strong><br>你内心住着一个议会，他/她永远站在门外倾听。你会被他/她的自由打动，因为那是你内心所有声音都渴望的状态；他/她会被你的丰富吸引，因为每一个声音都像一扇不同的门。相处之道：让他/她成为你所有声音的倾听者，你成为他/她偶尔想要停留的理由。你们可以一起探索“门口”也是一种存在方式。',
+                                E: '<strong>【深渊调和者】×【深渊调和者】</strong><br>你们内心都住着一个议会。这是一场两个议会的对话，可能产生最复杂的共鸣，也可能爆发最激烈的冲突。你们能深刻理解彼此的多元与矛盾，因为你们都是这样。但危险在于：可能陷入“谁的议会更丰富”的竞赛，或者因为太过理解而失去新鲜感。相处之道：不必试图整合对方，只需欣赏对方的存在。让两个议会偶尔开个联席会议，但大部分时候各自独立。你们都是完整的，所以你们不需要彼此来完整自己——这才是最深的自由。'
+                            }
+                        }
+                    };
+
+                    return results[typeKey] || results['A'];
+                }
+            },
+            methods: {
+                startTest() {
+                    this.currentPage = 'test';
+                    this.currentQuestionIndex = 1;
+                },
+                selectOption(value) {
+                    this.$set(this.answers, this.currentQuestionIndex - 1, value);
+                },
+                nextQuestion() {
+                    if (!this.answers[this.currentQuestionIndex - 1]) {
+                        alert('请选择一个选项');
+                        return;
+                    }
+                    if (this.currentQuestionIndex === this.questions.length) {
+                        this.currentPage = 'result';
+                    } else {
+                        this.currentQuestionIndex++;
+                    }
+                },
+                prevQuestion() {
+                    if (this.currentQuestionIndex > 1) {
+                        this.currentQuestionIndex--;
+                    }
+                },
+                resetTest() {
+                    this.currentPage = 'cover';
+                    this.currentQuestionIndex = 1;
+                    this.answers = Array(18).fill('');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>深渊回响 · 灵魂阴影面纱</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', 'Songti SC', serif;
+            background: #0a0a0a;
+            color: #e0d8c0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 1rem;
+            background-image: radial-gradient(circle at 10% 20%, #1a1a1a 0%, #0a0a0a 90%);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid #3a3a3a;
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 0 1px #4a3f2e inset;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+            letter-spacing: 4px;
+            margin-bottom: 0.5rem;
+            color: #d4b68a;
+            text-shadow: 0 0 10px #8a6e4b;
+            font-weight: 300;
+            border-bottom: 1px solid #3a3a3a;
+            padding-bottom: 1rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-style: italic;
+            color: #9a8c76;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+        
+        .quote {
+            text-align: center;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-left: 3px solid #6a5e4a;
+            border-right: 3px solid #6a5e4a;
+            background: rgba(30, 30, 30, 0.6);
+            font-style: italic;
+            color: #c8bc9a;
+            font-size: 1.1rem;
+        }
+        
+        .progress {
+            width: 100%;
+            height: 4px;
+            background: #2a2a2a;
+            margin: 1.5rem 0;
+            border-radius: 2px;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #b89a6a;
+            width: 0%;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+        
+        .question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 16px;
+            border: 1px solid #3a3a3a;
+        }
+        
+        .question h3 {
+            color: #d0b084;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        
+        .question p {
+            margin-bottom: 1.2rem;
+            font-style: italic;
+            color: #b0a890;
+            font-size: 1.05rem;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1.2rem;
+            background: rgba(40, 40, 40, 0.8);
+            border: 1px solid #4a4a4a;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        
+        .option:hover {
+            background: rgba(60, 60, 60, 0.9);
+            border-color: #b89a6a;
+        }
+        
+        .option.selected {
+            background: rgba(100, 80, 50, 0.4);
+            border-color: #d4b68a;
+            box-shadow: 0 0 15px rgba(180, 140, 80, 0.3);
+        }
+        
+        .option input {
+            margin-right: 0.5rem;
+            accent-color: #b89a6a;
+            transform: scale(1.1);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0 1rem;
+        }
+        
+        button {
+            background: #2a2a2a;
+            color: #d0b084;
+            border: 1px solid #5a4e3a;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+            border-radius: 40px;
+            min-width: 120px;
+        }
+        
+        button:hover {
+            background: #3a3a3a;
+            border-color: #b89a6a;
+            color: #e8d0a0;
+            box-shadow: 0 0 15px rgba(180, 140, 80, 0.3);
+        }
+        
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .result-container {
+            margin-top: 1.5rem;
+            padding: 1.8rem;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #5a4e3a;
+            border-radius: 20px;
+        }
+        
+        .result-type {
+            font-size: 2.2rem;
+            color: #e8c68a;
+            text-align: center;
+            margin-bottom: 0.8rem;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px #a67c4a;
+            font-weight: 400;
+        }
+        
+        .result-sub {
+            text-align: center;
+            font-style: italic;
+            color: #b8aa8a;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            border-bottom: 1px dashed #4a3f2e;
+            padding-bottom: 1.2rem;
+        }
+        
+        .dimension-chart {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #1a1a1a;
+            border-radius: 16px;
+            border: 1px solid #3a3a3a;
+        }
+        
+        .dimension-chart h4 {
+            text-align: center;
+            color: #c8b084;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+        
+        .dimension-item {
+            margin-bottom: 1.2rem;
+        }
+        
+        .dimension-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.3rem;
+            color: #c8b894;
+            font-size: 1rem;
+        }
+        
+        .dimension-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: #2a2a2a;
+            border-radius: 4px;
+        }
+        
+        .dimension-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #6a5a3a, #d4b68a);
+            border-radius: 4px;
+            width: 0%;
+        }
+        
+        .analysis-section {
+            margin: 2.5rem 0;
+        }
+        
+        .analysis-block {
+            margin-bottom: 2rem;
+            padding: 1.2rem;
+            background: rgba(25, 25, 25, 0.7);
+            border-radius: 12px;
+            border-left: 4px solid #b89a6a;
+        }
+        
+        .analysis-block h4 {
+            color: #e0c084;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        
+        .analysis-block p {
+            color: #d0c4a8;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+        
+        .match-section {
+            margin: 2.5rem 0 1.5rem;
+            padding: 1.5rem;
+            background: #1e1a14;
+            border-radius: 16px;
+            border: 1px solid #6a5a3a;
+        }
+        
+        .match-section h4 {
+            font-size: 1.4rem;
+            color: #d8b88a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+        
+        .match-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        
+        .match-item {
+            padding: 1.2rem;
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 12px;
+            border: 1px solid #4a3f2e;
+        }
+        
+        .match-type {
+            font-size: 1.2rem;
+            color: #e8c68a;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+            border-bottom: 1px dotted #5a4e3a;
+            padding-bottom: 0.4rem;
+        }
+        
+        .match-desc {
+            color: #c8bc9a;
+            line-height: 1.7;
+            font-size: 0.98rem;
+        }
+        
+        .match-desc strong {
+            color: #e0b070;
+            font-weight: 400;
+        }
+        
+        .reset-btn {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto 0;
+            padding: 0.8rem 3rem;
+            background: transparent;
+            border: 1px solid #6a5e4a;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 2rem;
+            color: #6a5e4a;
+            font-size: 0.8rem;
+            border-top: 1px solid #2a2a2a;
+            padding-top: 1rem;
+        }
+        
+        .count-badge {
+            display: inline-block;
+            background: #3a3a3a;
+            color: #b89a6a;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .result-type {
+                font-size: 1.8rem;
+            }
+            button {
+                padding: 0.7rem 1.2rem;
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- 封面 -->
+        <div id="cover" :class="currentPage === 'cover' ? '' : 'hidden'">
+            <h1>◈ 深渊回响 ◈</h1>
+            <div class="subtitle">灵魂的阴影面纱</div>
+            <div class="quote">
+                “你害怕的从来不是黑暗，<br>而是黑暗中可能存在的自己。”
+            </div>
+            <div style="text-align: center; margin: 3rem 0;">
+                <button @click="startTest">▶ 进入深渊</button>
+            </div>
+            <div style="color: #6a5e4a; text-align: center; font-size: 0.9rem; margin-top: 2rem;">
+                🫸 18道题 · 看见你灵魂的另一面 🫷
+            </div>
+        </div>
+
+        <!-- 测试页 -->
+        <div id="test" :class="currentPage === 'test' ? '' : 'hidden'">
+            <div class="progress">
+                <div class="progress-bar" :style="{ width: (currentQuestionIndex / questions.length * 100) + '%' }"></div>
+            </div>
+            <div style="text-align: right; color: #8a7e6a; margin-bottom: 0.5rem; font-size: 0.95rem;">
+                第 {{ currentQuestionIndex }} / {{ questions.length }} 章
+            </div>
+
+            <div class="question">
+                <h3>{{ questions[currentQuestionIndex-1].title }}</h3>
+                <p>{{ questions[currentQuestionIndex-1].desc }}</p>
+                <div class="options">
+                    <div v-for="(option, idx) in questions[currentQuestionIndex-1].options" 
+                         :key="idx"
+                         class="option"
+                         :class="{ selected: answers[currentQuestionIndex-1] === String.fromCharCode(65 + idx) }"
+                         @click="selectOption(String.fromCharCode(65 + idx))">
+                        <input type="radio" 
+                               :name="'q' + currentQuestionIndex" 
+                               :value="String.fromCharCode(65 + idx)"
+                               :checked="answers[currentQuestionIndex-1] === String.fromCharCode(65 + idx)"
+                               @change="selectOption(String.fromCharCode(65 + idx))">
+                        <span>{{ option }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button @click="prevQuestion" :disabled="currentQuestionIndex === 1">← 上一章</button>
+                <button @click="nextQuestion" :disabled="!answers[currentQuestionIndex-1]">
+                    {{ currentQuestionIndex === questions.length ? '窥见深渊' : '下一章 →' }}
+                </button>
+            </div>
+        </div>
+
+        <!-- 结果页 -->
+        <div id="result" :class="currentPage === 'result' ? '' : 'hidden'">
+            <div class="result-type">{{ resultData.type }}</div>
+            <div class="result-sub">{{ resultData.subtitle }}</div>
+
+            <!-- 选项分布 -->
+            <div style="text-align: center; margin-bottom: 1.5rem; color: #9a8c76; font-size: 0.95rem;">
+                <span class="count-badge">A {{ answerCounts.A }}</span>
+                <span class="count-badge">B {{ answerCounts.B }}</span>
+                <span class="count-badge">C {{ answerCounts.C }}</span>
+                <span class="count-badge">D {{ answerCounts.D }}</span>
+            </div>
+
+            <!-- 多维阴影图谱 -->
+            <div class="dimension-chart">
+                <h4>⚭ 多维阴影图谱 ⚭</h4>
+                <div v-for="(value, key) in resultData.dimensions" :key="key" class="dimension-item">
+                    <div class="dimension-label">
+                        <span>{{ key }}</span>
+                        <span>{{ value }}/10</span>
+                    </div>
+                    <div class="dimension-bar-bg">
+                        <div class="dimension-bar" :style="{ width: (value * 10) + '%' }"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 详细解析 -->
+            <div class="analysis-section">
+                <div class="analysis-block">
+                    <h4>◈ 阴影的本质 · 深渊的低语</h4>
+                    <p>{{ resultData.nature }}</p>
+                </div>
+                
+                <div class="analysis-block">
+                    <h4>◈ 灵魂的起源 · 来处</h4>
+                    <p>{{ resultData.origin }}</p>
+                </div>
+                
+                <div class="analysis-block">
+                    <h4>◈ 潜在的危险 · 当阴影吞噬光明</h4>
+                    <p>{{ resultData.danger }}</p>
+                </div>
+                
+                <div class="analysis-block">
+                    <h4>◈ 成长的路径 · 与阴影共舞</h4>
+                    <p>{{ resultData.path }}</p>
+                </div>
+                
+                <div class="analysis-block">
+                    <h4>◈ 未被发现的天赋 · 深渊的馈赠</h4>
+                    <p>{{ resultData.gift }}</p>
+                </div>
+                
+                <div class="analysis-block">
+                    <h4>◈ 给这个世界的情诗 · 存在的意义</h4>
+                    <p>{{ resultData.poem }}</p>
+                </div>
+            </div>
+
+            <!-- 灵魂匹配（详细版） -->
+            <div class="match-section">
+                <h4>⟡ 灵魂匹配 · 与谁共舞深渊 ⟡</h4>
+                <div class="match-grid">
+                    <div class="match-item">
+                        <div class="match-type">【镜像吞噬者】</div>
+                        <div class="match-desc" v-html="resultData.match.A"></div>
+                    </div>
+                    <div class="match-item">
+                        <div class="match-type">【守夜人】</div>
+                        <div class="match-desc" v-html="resultData.match.B"></div>
+                    </div>
+                    <div class="match-item">
+                        <div class="match-type">【沉睡者】</div>
+                        <div class="match-desc" v-html="resultData.match.C"></div>
+                    </div>
+                    <div class="match-item">
+                        <div class="match-type">【门外的访客】</div>
+                        <div class="match-desc" v-html="resultData.match.D"></div>
+                    </div>
+                    <div class="match-item">
+                        <div class="match-type">【深渊调和者】</div>
+                        <div class="match-desc" v-html="resultData.match.E"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-btn" @click="resetTest">◈ 重返深渊 ◈</button>
+        </div>
+
+        <div class="footer-note">
+            ⚰️ 深渊回响 · 灵魂的阴影面纱 ⚰️
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                currentPage: 'cover',
+                currentQuestionIndex: 1,
+                answers: Array(18).fill(''),
+                questions: [
+                    {
+                        title: '第一幕 · 镜中幻影',
+                        desc: '午夜醒来，经过一面镜子时，你瞥见镜中自己的倒影没有跟随你的动作。它静止不动，只是直直地盯着你。你的第一反应是：',
+                        options: ['A. 缓缓靠近，想看清它眼中藏着什么', 'B. 迅速移开视线，假装什么都没发生', 'C. 对着镜子微笑，挑衅地等待它回应', 'D. 砸碎镜子，让那个倒影彻底消失']
+                    },
+                    {
+                        title: '第二幕 · 废弃教堂',
+                        desc: '你走进一座废弃的教堂，穹顶的彩绘玻璃已经破碎。阳光透过缺口洒下，在地面投出斑驳的光影。你最想在哪个位置站定：',
+                        options: ['A. 正中央那道最亮的光柱下，闭上眼感受温暖', 'B. 角落里最深的阴影中，观察光柱里的尘埃飞舞', 'C. 破碎的圣坛前，触摸那些被遗弃的烛台', 'D. 门口，一只脚在里，一只脚在外，随时准备离开']
+                    },
+                    {
+                        title: '第三幕 · 雨夜访客',
+                        desc: '暴雨倾盆的深夜，有人敲响你的门。透过猫眼，你看到一个人浑身湿透，面容模糊不清。他说他认识你，但你想不起他是谁。你会：',
+                        options: ['A. 开门让他进来，给他一条干毛巾和热茶', 'B. 隔着门问他名字，直到确认他的身份', 'C. 不开门，但隔着门陪他说话，直到雨停', 'D. 假装不在家，关掉所有灯，等待他离开']
+                    },
+                    {
+                        title: '第四幕 · 梦中之梦',
+                        desc: '你在梦中意识到自己在做梦，但无论如何都无法醒来。这时，梦境中的某个声音对你说：“你不想知道，醒着的你是什么样子吗？”你：',
+                        options: ['A. 追问那个声音，渴望看到真实的自己', 'B. 害怕了，拼命掐自己，试图醒来', 'C. 接受这个状态，开始在梦中探索这个只有你的世界', 'D. 质问那个声音是谁，凭什么窥视你']
+                    },
+                    {
+                        title: '第五幕 · 古老书卷',
+                        desc: '你发现了一本古老的羊皮书卷，封面没有标题。翻开第一页，上面用褪色的墨水写着一句话。这句话最可能是：',
+                        options: ['A. “你害怕的从来不是黑暗，而是黑暗中可能存在的自己”', 'B. “所有秘密都会在第七个满月之夜开口说话”', 'C. “记住：你杀死的东西，都会在你的梦里复活”', 'D. “门已经打开，但你从未离开”']
+                    },
+                    {
+                        title: '第六幕 · 密道尽头',
+                        desc: '在老宅的壁橱后面，你发现了一条密道。尽头有两扇门，你必须选择一扇推开：',
+                        options: ['A. 黑色的门，门缝里透出微弱的光，隐约有音乐传来', 'B. 白色的门，门上挂着一面镜子，映出你此刻的表情', 'C. 红色的门，门板温热，像是有生命在呼吸', 'D. 没有颜色的门，门把手是冰冷的，推开门后是一片虚无']
+                    },
+                    {
+                        title: '第七幕 · 童年记忆',
+                        desc: '你翻出一张童年的照片，照片里的你正对着镜头笑。但你突然想起，拍这张照片的那天，你其实非常难过。你认为照片里的笑容是：',
+                        options: ['A. 为了让拍照的人开心而勉强挤出来的', 'B. 连你自己都骗过去的伪装，记忆已经模糊了', 'C. 笑容是真的，只是现在的你无法理解当时的快乐', 'D. 照片里的那个孩子根本不是真正的你']
+                    },
+                    {
+                        title: '第八幕 · 林中木屋',
+                        desc: '森林深处有一座无人居住的木屋，你推门而入。窗台上放着一只玻璃瓶，瓶子里装着：',
+                        options: ['A. 一撮灰烬，旁边贴着标签：“上一次心动”', 'B. 一只干枯的蝴蝶，翅膀上还有微弱的光泽', 'C. 一封没有拆封的信，收件人是你但笔迹陌生', 'D. 空瓶子，但瓶盖上刻着：“等你来填满”']
+                    },
+                    {
+                        title: '第九幕 · 最后的晚餐',
+                        desc: '你被邀请参加一场晚宴，桌上坐着六个人，但你只认识其中一个。那个人对你说：“今晚，有一个人不会活着离开这张桌子。”你的反应是：',
+                        options: ['A. 仔细观察每个人，试图找出谁是目标', 'B. 默默计算自己逃出去的几率', 'C. 若无其事地继续吃饭，仿佛没听见', 'D. 质问说话的人，为什么要告诉你这个']
+                    },
+                    {
+                        title: '第十幕 · 暗河渡船',
+                        desc: '你站在一条地下暗河的岸边，一个披着斗篷的船夫撑着船靠岸。他说可以渡你过河，但代价是留下一样东西。你愿意留下：',
+                        options: ['A. 你关于童年的全部记忆', 'B. 你最爱的一个人的名字', 'C. 你对明天的所有期待', 'D. 你的倒影（从此以后你将没有影子）']
+                    },
+                    {
+                        title: '第十一幕 · 禁闭的房间',
+                        desc: '你住在一间有七扇门的房子里，其中六扇你可以自由进出，第七扇门永远紧锁。有一天，你发现第七扇门虚掩着。你会：',
+                        options: ['A. 立刻推门进去，看看里面藏着什么', 'B. 先确认其他房间都安全，再慢慢靠近那扇门', 'C. 关上门，假装没看见，继续过原来的生活', 'D. 站在门口朝里看，但不踏进去']
+                    },
+                    {
+                        title: '第十二幕 · 陌生来电',
+                        desc: '凌晨三点，电话响起。接起来，那边沉默了很久，然后一个声音说：“我知道你做过什么。”你脑海中第一个浮现的是：',
+                        options: ['A. 一件你一直愧疚但从未告诉任何人的小事', 'B. 一个你幻想过但从不敢实施的念头', 'C. 你最近对某个人产生的恶意的想法', 'D. 一片空白，但心跳已经开始加速']
+                    },
+                    {
+                        title: '第十三幕 · 悬崖边缘',
+                        desc: '你站在悬崖边缘，脚下是万丈深渊。风吹得你几乎站不稳。此时你最想听到的一句话是：',
+                        options: ['A. “跳下去，你会飞。”', 'B. “后退一步，回到我身边。”', 'C. “你站在那里的样子，很美。”', 'D. 什么都不想听，只想一个人静静站着']
+                    },
+                    {
+                        title: '第十四幕 · 葬礼上的陌生人',
+                        desc: '你去参加一个亲人的葬礼，人群中出现一个陌生的面孔。他/她一直在看你，眼神复杂。你认为他/她是：',
+                        options: ['A. 死者生前隐藏的恋人，来送最后一程', 'B. 你的某个人格，终于在这一天现身', 'C. 死神本神，来带走下一个该走的人', 'D. 一个走错门的陌生人，却不愿离开']
+                    },
+                    {
+                        title: '第十五幕 · 午夜动物园',
+                        desc: '你独自在午夜走进一座废弃的动物园。所有的笼子都空着，但你能感觉到有眼睛在黑暗中注视你。最让你不安的是：',
+                        options: ['A. 那些眼睛可能来自被你伤害过的人', 'B. 那些眼睛可能来自你内心深处囚禁的野兽', 'C. 那些眼睛可能根本不存在，只是你的想象', 'D. 那些眼睛可能正在等待你打开笼子']
+                    },
+                    {
+                        title: '第十六幕 · 最后的遗言',
+                        desc: '如果你只能对这个世界说最后一句话，这句话会被刻在你的墓碑上。你希望它是：',
+                        options: ['A. “我终于自由了。”', 'B. “对不起，我试过了。”', 'C. “别难过，我从未真正存在过。”', 'D. 留白，什么都不刻']
+                    },
+                    {
+                        title: '第十七幕 · 深渊回望',
+                        desc: '你终于站在了深渊的边缘，低头望去。你看到的不再是黑暗，而是：',
+                        options: ['A. 无数双眼睛，都在向上看着你', 'B. 你自己的倒影，但它在微笑', 'C. 一片星空，比夜空更璀璨', 'D. 什么都没有，深渊只是深渊']
+                    },
+                    {
+                        title: '第十八幕 · 黎明前的选择',
+                        desc: '天快亮了，你必须离开这片黑暗之地。临走前，你被允许带走一样东西作为纪念。你会选择：',
+                        options: ['A. 一块镜子的碎片，可以照见任何人的真实面目', 'B. 一颗不会熄灭的黑色火焰，但它会灼伤你的手', 'C. 一把钥匙，但你不知道它能打开哪扇门', 'D. 什么都不带，干干净净地离开']
+                    }
+                ]
+            },
+            computed: {
+                answerCounts() {
+                    const counts = { A: 0, B: 0, C: 0, D: 0 };
+                    this.answers.forEach(a => { if (a) counts[a]++; });
+                    return counts;
+                },
+                resultData() {
+                    const counts = this.answerCounts;
+                    const total = this.answers.filter(a => a).length;
+                    
+                    // 默认返回（未完成测试）
+                    if (total < 18) {
+                        return {
+                            type: '【等待深渊回响】',
+                            subtitle: '请先完成全部18道题目',
+                            nature: '完成测试后，你将在这里看见自己的阴影人格。',
+                            origin: '——',
+                            danger: '——',
+                            path: '——',
+                            gift: '——',
+                            poem: '——',
+                            dimensions: {
+                                '阴影深度': 0,
+                                '控制欲望': 0,
+                                '伪装指数': 0,
+                                '孤独耐受': 0,
+                                '危险引力': 0
+                            },
+                            match: {
+                                A: '请先完成测试',
+                                B: '请先完成测试',
+                                C: '请先完成测试',
+                                D: '请先完成测试',
+                                E: '请先完成测试'
+                            }
+                        };
+                    }
+
+                    // 确定类型
+                    const maxCount = Math.max(counts.A, counts.B, counts.C, counts.D);
+                    const types = [];
+                    if (counts.A === maxCount) types.push('A');
+                    if (counts.B === maxCount) types.push('B');
+                    if (counts.C === maxCount) types.push('C');
+                    if (counts.D === maxCount) types.push('D');
+
+                    let typeKey = '';
+                    if (types.length > 1) typeKey = 'E'; // 调和者
+                    else if (types[0] === 'A') typeKey = 'A';
+                    else if (types[0] === 'B') typeKey = 'B';
+                    else if (types[0] === 'C') typeKey = 'C';
+                    else if (types[0] === 'D') typeKey = 'D';
+
+                    // 计算维度
+                    const shadowDepth = Math.min(10, Math.round((counts.A * 1.5 + counts.C * 0.5) / 18 * 10));
+                    const control = Math.min(10, Math.round((counts.B * 1.2 + counts.D * 0.8) / 18 * 10));
+                    const mask = Math.min(10, Math.round((counts.C * 1.3 + counts.A * 0.7) / 18 * 10));
+                    const solitude = Math.min(10, Math.round((counts.D * 1.4 + counts.B * 0.6) / 18 * 10));
+                    const danger = Math.min(10, Math.round((counts.A + counts.B + counts.C + counts.D) / 18 * 8 + 2));
+
+                    const dimensions = {
+                        '阴影深度': shadowDepth,
+                        '控制欲望': control,
+                        '伪装指数': mask,
+                        '孤独耐受': solitude,
+                        '危险引力': danger
+                    };
+
+                    // 完整解析数据
+                    const results = {
+                        'A': {
+                            type: '【镜像吞噬者】',
+                            subtitle: '“你害怕的从来不是镜子，而是镜中那个不跟随你动作的倒影。”',
+                            nature: '你的阴影人格是一位贪婪的收藏家，终生致力于收集自己的每一面镜子。你无法忍受表面的平静，总是试图揭开每一层伪装，包括你自己的。这种对真实的执念让你成为一个深刻的自我探索者，但也让你像一个永远无法满足的深渊，需要吞噬越来越多的自我认知才能维持平衡。你渴望看清自己的每一面，哪怕是最不堪的那些——因为对你而言，未知比黑暗更可怕。',
+                            origin: '你出生在一个需要多重面具才能生存的环境。也许童年时，你必须学会在不同的成年人面前扮演不同的自己；也许你曾经因为展现真实的一面而受过伤害。从那时起，你就在内心深处种下了一颗种子：只有看清所有的自己，才能保护真正的自己。你的阴影是那个在暗处帮你收集面具的孩子，他/她从未长大，也从未停止工作。',
+                            danger: '当你过度沉浸在自我审视中，你会陷入“镜像迷宫”——在无数个自我倒影中迷失方向，分不清哪个是本源，哪个是投影。这种状态下，你可能会对自己产生陌生感，甚至做出违背本心的行为，只为了观察“那个自己会怎么做”。最危险的是，你可能会开始享受这种分裂，把自我撕裂当成一种艺术，而忘记了碎片之下的血肉之躯正在流血。',
+                            path: '你需要学会的不是停止探索，而是在探索中找到一个锚点。这个锚点可以是一个你无论如何都不会质疑的核心价值，也可以是一个无论经历多少变化都愿意接纳你的人。每天给自己一个“不审视”的时刻——只是存在，不去分析，不去解读，不去收集。让镜子只映照，不吞噬；让倒影存在，但不喧宾夺主。试着对镜子里的那个自己说：“我看见你了，但今天，我不需要知道你是谁。”',
+                            gift: '你是天生的心理学家、诗人和艺术家。你能洞察人心最深处的动机，能描绘出别人看不到的情感纹理。当别人还在迷雾中摸索时，你已经看见了整座迷宫的图纸。你的作品（无论是文字、图像还是思想）总能让读者在其中看见自己的影子。当你学会驾驭这种能力而不被其吞噬，你将成为一个能照亮他人黑暗的灯塔，而不是一个永远凝视深渊的迷失者。',
+                            poem: '“你是那面永不满足的镜子，想要映照整个宇宙。但别忘了，最深的真理往往藏在最浅的表象里。有时，一滴露水比整片海洋更能照见阳光。”',
+                            dimensions: dimensions,
+                            match: {
+                                A: '<strong>【镜像吞噬者】×【镜像吞噬者】</strong><br>你们像两面相对的镜子，创造出无限延伸的深度。这种组合能产生惊人的共鸣，彼此都能理解对方对真实的渴求。你们不会害怕彼此的阴影，反而会被对方的复杂深深吸引。但危险在于：你们可能陷入“谁更了解谁”的竞赛，在无限反射中失去边界。相处之道：约定一个“停止反射”的信号，学会欣赏表面而不总是追求深度。',
+                                B: '<strong>【镜像吞噬者】×【守夜人】</strong><br>你渴望深入探索，他/她保持安全观察。你是一团想要燃烧一切的火，他/她是一盏只想照明的灯。你们能形成奇妙的互补——你需要他/她的稳定来避免迷失，他/她需要你的勇气来走近阴影。但你可能觉得他/她太保守，他/她可能觉得你太危险。相处之道：尊重彼此的节奏，不要强求对方进入不愿进入的领域。',
+                                C: '<strong>【镜像吞噬者】×【沉睡者】</strong><br>你被沉睡者的纯真吸引，他/她被你的深度吸引。这是一场光明与黑暗的邂逅，充满诗意的张力。但你可能无意中唤醒他/她不愿面对的阴影，而他/她可能承受不了你的深度而选择逃离。相处之道：放慢脚步，允许他/她以自己的节奏觉醒。温柔地照亮，而非猛烈地唤醒。',
+                                D: '<strong>【镜像吞噬者】×【门外的访客】</strong><br>你渴望进入他/她的内心世界，他/她则被你的真诚吸引。你像一把钥匙，他/她像一扇永远虚掩的门。你们之间充满了探索的张力，每一次靠近都是一场冒险。但你可能因为他/她始终无法完全进入关系而感到挫败。相处之道：接受他/她的边界感，不强求“完全进入”。让他/她为你留一盏灯，但不要求他/她开门。',
+                                E: '<strong>【镜像吞噬者】×【深渊调和者】</strong><br>调和者内心住着一个议会，而你渴望探访每一个房间。你们之间可能产生最丰富的对话——你帮他/她梳理内在的声音，他/她帮你看见自己的完整性。但你也可能因为他/她的复杂性而感到疲惫。相处之道：不要试图掌控他/她的所有声音，学会欣赏他/她的多元与矛盾。'
+                            }
+                        },
+                        'B': {
+                            type: '【守夜人】',
+                            subtitle: '“你在黑暗中守望，却从不踏入黑暗。”',
+                            nature: '你的阴影人格是一位警惕的守卫，它站在你内心世界与外部阴影的交界处，日夜巡逻。你拥有敏锐的洞察力，能轻易察觉他人和自身的阴暗面，但你选择了一条不同的路——看见但不靠近，知晓但不深究。这种克制源于你对失控的深深恐惧。你宁愿在安全距离外观察黑暗，也不愿踏入半步。你的力量不在于直面阴影，而在于永不转身。',
+                            origin: '你曾经踏入过黑暗。也许是一次过于深刻的信任，也许是一次毫无保留的付出，也许是一次让你至今仍在午夜惊醒的背叛。从那以后，你就在内心深处建造了一座瞭望塔。你告诉自己：只要不靠近，就不会再受伤。你的阴影是那个在塔顶彻夜不眠的守望者，他/她的眼睛从未离开过地平线，但也从未离开过塔楼。',
+                            danger: '长期处于“看见但不进入”的状态，会让你逐渐失去与自己阴影的连接。被压抑的黑暗不会消失，只会在你看不见的地方积聚。终有一天，它可能会以你无法控制的方式爆发——或者更糟，它会让你变得冷漠，失去对任何事物的深度感受能力。当你守夜太久，你会忘记自己也是黑夜的一部分。',
+                            path: '你不需要立刻跳进深渊，但可以尝试偶尔走近一点。给自己设定一些“安全探索区”——在日记里写下那些你平时不敢承认的念头，在一个安全的关系中分享你最隐秘的恐惧，或者在深夜里允许自己流泪而不问原因。让守夜人偶尔休息一下，让阴影有机会在可控的范围内呼吸。试着对那个守望者说：“谢谢你保护我这么久。今晚，让我来守夜，你去睡一会儿。”',
+                            gift: '你是天生的保护者、调解人和边界守护者。你能够感知危险而不被危险吞噬，能够理解黑暗而不被黑暗同化。你能在混乱中保持清醒，在风暴中找到锚点。当你学会适度地与自己阴影对话，你将成为一个既温柔又强大的人——既能守护他人，也能守护自己；既能看见深渊，也能远离深渊。你是别人眼中的灯塔，也是自己心中的港湾。',
+                            poem: '“你是那座永不熄灭的灯塔，为迷航者照亮归途。但别忘了，灯塔也需要休息。有时，熄灭所有的光，才能看见真正的星空。”',
+                            dimensions: dimensions,
+                            match: {
+                                A: '<strong>【守夜人】×【镜像吞噬者】</strong><br>你保持观察，他/她渴望深入。你是一盏灯，他/她是一团火。你们能形成奇妙的互补——他/她需要你的稳定来避免迷失，你需要他/她的勇气来走近阴影。但你可能觉得他/她太危险，他/她可能觉得你太保守。相处之道：偶尔放下警惕，跟随他/她进行一次冒险；同时也要教会他/她，观察也是一种参与。',
+                                B: '<strong>【守夜人】×【守夜人】</strong><br>你们互相理解彼此的谨慎，尊重对方的边界。这是一段冷静而深刻的关系，像两个并肩站立的守望者，共同注视着同一个方向。你们不会互相催促，不会强求对方踏入不愿进入的领域。但危险在于：可能因为过于克制而缺乏激情，双方都在等待对方先迈出一步。相处之道：定期创造一些“越界”的时刻，哪怕只是小小的冒险。让彼此知道，偶尔放下警惕，世界不会崩塌。',
+                                C: '<strong>【守夜人】×【沉睡者】</strong><br>你的警惕给他/她带来安全感，他/她的乐观让你感到放松。你像一座灯塔，他/她像一艘在平静海面上航行的船。这是一段温和而滋养的关系，充满温柔的守护。但你可能因为过度保护而限制他/她的成长，他/她可能因为太过天真而无法理解你的担忧。相处之道：学会偶尔放手，让他/她在安全范围内体验一些风险；也让他/她看见你眼中那个有时过于警惕的世界。',
+                                D: '<strong>【守夜人】×【门外的访客】</strong><br>你站在光明与黑暗的边界，他/她永远在门口徘徊。你们都在边缘地带生活，彼此能理解那种“既不在此也不在彼”的状态。你们可以分享关于“边界”的一切秘密。但危险在于：可能陷入“谁先跨过门槛”的僵局，两个都不敢真正进入关系的人，很难建立深度的连接。相处之道：轮流扮演“跨门者”的角色。这次你进来，下次我出去。让边缘变成一个可以流动的空间。',
+                                E: '<strong>【守夜人】×【深渊调和者】</strong><br>调和者内心住着一个议会，而你擅长观察而不介入。你们之间可以形成一种安静的默契——你倾听他/她所有的声音，却不评判，不干预。这是最安全的港湾。但你也可能因为过度克制而让他/她感到疏离。相处之道：偶尔也让他/她听见你的声音，而不仅仅是你的沉默。'
+                            }
+                        },
+                        'C': {
+                            type: '【沉睡者】',
+                            subtitle: '“你的黑暗面还在沉睡，但偶尔会在梦中翻身。”',
+                            nature: '你的阴影人格像一个沉睡的孩子，安静地蜷缩在你心灵最深处的房间。你不常感知它的存在，甚至可能否认它的存在。你习惯用善意和乐观过滤世界，这让你的生活看起来平静而美好，但也让你错过了一部分关于自己和世界的真相。你的阴影不是不存在，只是还在等待一个被唤醒的时刻——也许是深夜的一滴泪，也许是一句刺耳的真话，也许是一个让你无法再逃避的人。',
+                            origin: '你曾经被保护得很好，或者你选择性地遗忘了那些不够美好的记忆。也许童年时，有人替你挡住了世界的恶意；也许你曾经历过难以承受的痛苦，于是你的灵魂选择把那些记忆锁进地下室，并把钥匙扔进海里。你的阴影是那个被锁在地下室的孩子，他/她不吵不闹，安静地睡着，但偶尔会在梦中翻身，让你在清晨醒来时感到莫名的悲伤。',
+                            danger: '沉睡者终有醒来的一天。当生活不可避免地带来痛苦、背叛或失望时，你长期压抑的阴影可能会猛然苏醒，用你完全不熟悉的方式表达自己。你可能会做出让自己都惊讶的事情，或者陷入深深的自我怀疑：“原来我也会这样？” 最危险的是，当阴影终于醒来时，你可能不知道如何与它相处，因为它对你而言太过陌生。',
+                            path: '唤醒阴影不需要一场革命，只需要一次温和的对话。试着在独处时问自己：“如果我可以对某个人产生最坏的念头，那个人会是谁？为什么？” 允许自己拥有那些“不该有”的情绪，它们不会定义你，但否认它们会让你失去对自己的完整认知。每天给自己五分钟，做一个“不乐观”的人——允许自己愤怒、嫉妒、悲伤，而不必为此感到羞愧。试着对那个沉睡的孩子说：“你可以醒来，我不会怪你。”',
+                            gift: '你是天生的疗愈者、希望携带者和光的守护者。你的乐观不是无知，而是一种深刻的选择。当你学会在保持善良的同时接纳自己的阴影，你的疗愈力将拥有真正的深度——你能安慰的不再只是那些和你一样阳光的人，还有那些在黑暗中挣扎的灵魂，因为你知道黑暗的轮廓，即使你从未踏入。你会成为那种“在暴风雨中依然相信天晴”的人，而你的相信会让别人也愿意相信。',
+                            poem: '“你是那个在春天沉睡的孩子，梦里全是花开。但别忘了，泥土之下也有根须在黑暗中生长。它们不曾见过光，却支撑着你看过的每一朵花。”',
+                            dimensions: dimensions,
+                            match: {
+                                A: '<strong>【沉睡者】×【镜像吞噬者】</strong><br>你的纯真吸引着他/她，他/她的深度吸引着你。这是一场光明与黑暗的邂逅，像月光与深渊的对话。但他/她可能无意中唤醒你不愿面对的阴影，而你可能因为承受不了他/她的深度而选择逃离。相处之道：让他/她知道你的边界，也允许自己偶尔踏入他/她的世界看一看。温柔地睁开眼，而非恐惧地转身。',
+                                B: '<strong>【沉睡者】×【守夜人】</strong><br>你的乐观让他/她感到放松，他/她的警惕给你带来安全感。你像一艘船，他/她像一座灯塔。这是一段温和而滋养的关系，充满温柔的守护。但他/她可能因为过度保护而限制你的成长，你可能因为太过天真而无法理解他/她的担忧。相处之道：让他/她知道你也需要体验一些风险，也试着看见他/她眼中那个有时过于警惕的世界。',
+                                C: '<strong>【沉睡者】×【沉睡者】</strong><br>这是一段阳光明媚的关系，你们一起选择看见世界美好的一面。你们互相温暖，彼此照亮，像两个一起晒太阳的孩子。你们的关系充满信任和柔软。但危险在于：当真正的阴影来临时，你们可能都没有应对的能力。一次共同的创伤可能会摧毁你们共同建造的纯真世界。相处之道：一起学习温柔地面对阴影。从看一部悲伤的电影开始，从讨论一个让你们不安的话题开始。让你们的阳光小屋也能容纳偶尔的雨天。',
+                                D: '<strong>【沉睡者】×【门外的访客】</strong><br>你被他/她的神秘吸引，他/她被你的单纯吸引。这是一段童话与现实相遇的关系，像森林与迷雾的相遇。但你可能永远等不到他/她真正进入的那一天，他/她可能因为你的期待而感到压力。相处之道：接受他/她的本性，不强求对方变成“常住居民”。享受他/她偶尔的停留，而不期待永远的陪伴。',
+                                E: '<strong>【沉睡者】×【深渊调和者】</strong><br>调和者内心住着一个议会，而你代表着其中最单纯的声音。你会被调和者的复杂性吸引，因为那正是你未曾探索的世界。调和者会被你的纯粹打动，因为那是他/她内心深处最渴望的宁静。相处之道：让他/她带你探索世界，你带他/她回到简单。你们可以成为彼此的向导。'
+                            }
+                        },
+                        'D': {
+                            type: '【门外的访客】',
+                            subtitle: '“你既不在光明中，也不在黑暗里。你永远站在门口。”',
+                            nature: '你的阴影人格是一位永恒的徘徊者，永远站在门槛上，既不进入，也不离开。你是一个永恒的边界居民——既不完全接纳光明，也不彻底拥抱黑暗；既不完全真实，也不完全伪装。这种游离状态让你拥有惊人的适应力，但也让你始终无法在任何一方找到归属。你可以是任何人，所以你也可能谁都不是。你的力量在于自由，你的诅咒在于无处可归。',
+                            origin: '你曾经试图进入某扇门，但那扇门在你身后关上了。也许你被拒绝过，也许你被抛弃过，也许你曾经走进一个地方却发现那不是你该来的。从那以后，你就学会了永远不要完全进入。你站在门口，随时准备离开，也随时准备进入——但最终，你只是站着。你的阴影是那个永远在等待的旅人，他/她的行李从未完全打开，也从未完全收拾。',
+                            danger: '长期处于“门口”状态，会让你逐渐失去与任何一方的深度连接。你可能变得难以承诺、难以信任、难以真正投入任何关系或事业。因为只要你一直站在门口，就永远不必面对进入后的未知，也不必承受离开后的遗憾。但这种自由，也是一种最深的囚禁。最危险的是，你可能有一天会发现，门口已经成了你的整个世界，而门里门外都成了陌生的远方。',
+                            path: '你需要做的不是选择光明或黑暗，而是学会在门口安家。接受自己永远在边界上的事实，把这种“边缘性”变成你的家园。你可以成为连接两个世界的桥梁，而不是一个永远犹豫不决的徘徊者。给自己一个承诺：无论站在哪里，都要全然地站在那里。试着对那个徘徊者说：“这里也可以是一个家。你不必再等了。”',
+                            gift: '你是天生的翻译者、桥梁建造者和边界诗人。你能理解光明与黑暗两种语言，能在对立面之间找到沟通的渠道。当别人陷入二元对立的争吵时，你能看见第三条路；当两个世界互相仇恨时，你能成为那个传递消息的信使。当你不再为自己的“游离”而焦虑，你将成为一个能连接不同世界的使者——既不属于这里，也不属于那里，但正因为如此，你属于所有地方。',
+                            poem: '“你是那个永远站在门口的人，手里握着一把不属于任何门的钥匙。但别忘了，门槛本身也是一个地方。你站着的那个位置，就是你的国度。”',
+                            dimensions: dimensions,
+                            match: {
+                                A: '<strong>【门外的访客】×【镜像吞噬者】</strong><br>他/她渴望进入你的内心世界，你被他/她的真诚吸引。你像一扇虚掩的门，他/她像一把执着的钥匙。你们之间充满了探索的张力，每一次靠近都是一场冒险。但他/她可能因为你始终无法完全进入关系而感到挫败。相处之道：让他/她知道你的边界不是拒绝，而是保护。为他/她留一盏灯，但不强求自己开门。',
+                                B: '<strong>【门外的访客】×【守夜人】</strong><br>你永远在门口徘徊，他/她永远在边界守望。你们都在边缘地带生活，彼此能理解那种“既不在此也不在彼”的状态。你们可以分享关于“边界”的一切秘密，成为彼此唯一的同类。但危险在于：可能陷入“谁先跨过门槛”的僵局。相处之道：轮流扮演“跨门者”的角色。这次你进来，下次我出去。让边缘变成一个可以流动的空间。',
+                                C: '<strong>【门外的访客】×【沉睡者】</strong><br>你的神秘吸引着他/她，他/她的单纯吸引着你。这是一段童话与现实相遇的关系，像迷雾与森林的相遇。但你可能因为他/她的期待而感到压力，他/她可能永远等不到你真正进入的那一天。相处之道：让他/她知道你的徘徊不是拒绝，而是本性。享受你偶尔的停留，而不期待永远的陪伴。',
+                                D: '<strong>【门外的访客】×【门外的访客】</strong><br>你们互相理解那种永远在边缘的孤独，也尊重彼此的自由。这是一段轻盈而深刻的关系，像两阵风，时而相遇，时而分离。你们不需要承诺，因为你们都知道承诺的重量；你们也不需要永恒，因为你们都在享受此刻的相遇。但危险在于：可能因为双方都太过自由而失去连接的锚点。相处之道：创造属于你们的仪式，哪怕只是每周一次共处的夜晚。让门口也可以是一个可以暂时安家的地方。',
+                                E: '<strong>【门外的访客】×【深渊调和者】</strong><br>调和者内心住着一个议会，而你永远站在门外倾听。你会被他/她的丰富吸引，因为每一个声音都像一扇不同的门；他/她会被你的自由打动，因为那是他/她内心所有声音都渴望的状态。相处之道：你可以成为他/她所有声音的倾听者，让他/她成为你偶尔想要停留的理由。'
+                            }
+                        },
+                        'E': {
+                            type: '【深渊调和者】',
+                            subtitle: '“你不是一个人，你是一群人。”',
+                            nature: '你的内心不是一个单一的存在，而是一个多元的议会。镜像吞噬者、守夜人、沉睡者、门外的访客——这些不同的声音都在你的内心占有一席之地，有时和谐共处，有时激烈争论。你的阴影不是一个，而是一群。这让你拥有最丰富的内心景观，也让你面临最复杂的内在冲突。你可以在一天之内经历四季，也可以在一个人身上看见众生。你的力量在于完整，你的挑战在于整合。',
+                            origin: '你经历过太多，或者你感受得太深。也许你曾经在不同的人生阶段扮演过不同的角色，也许你天生就是一块海绵，吸收着来自四面八方的情绪和经验。你的内心是一个没有锁的房间，每一个路过的灵魂都可以进来坐坐，有些人甚至留下来，成了你的一部分。你的阴影是所有这些住客的集合，他们有时一起开会，有时各自沉默。',
+                            danger: '当内心的议会无法达成共识，你会陷入严重的内耗。不同的声音争夺主导权，让你难以做出决定，难以找到平静。你可能会在一天之内经历多种情绪的剧烈波动，或者在不同场合展现截然不同的自己，直到连自己都感到陌生。最危险的是，你可能永远在寻找那个“真正的自己”，却没有意识到，你所有的声音加在一起，才是那个真正的自己。',
+                            path: '你需要的不再是探索更多的自我，而是学会如何主持内心的议会。给每一个声音发言的机会，但也要建立决策的机制。你可以尝试给内心的不同部分命名，写日记让它们轮流表达，然后找到那个能整合所有声音的“议长”——那才是你真正的核心自我。试着对那个议会说：“我听见你们所有人。现在，让我们一起做一个决定。”',
+                            gift: '你是天生的整合者、创造者和灵魂的诗人。你能容纳矛盾，能在对立中找到和谐，能在混乱中发现秩序。当别人只能看见事物的一个侧面时，你已经看见了它的整体。你拥有最丰富的内心世界，也能创造出最动人的作品。当你学会主持内心的多元声音，你将成为一个真正完整的人——你拥有光明的温暖，也拥有黑暗的深度；你能保持警惕，也能偶尔沉睡；你站在门口，但也敢于踏入未知。这种完整性，让你成为最复杂也最迷人的人。',
+                            poem: '“你不是一个人，你是一群人；你不是一条河，你是一片海。所有的矛盾在你这里和解，所有的声音在你这里共鸣。你不需要选择成为谁，因为你是所有人。”',
+                            dimensions: dimensions,
+                            match: {
+                                A: '<strong>【深渊调和者】×【镜像吞噬者】</strong><br>你内心住着一个议会，他/她渴望探访每一个房间。你们之间可能产生最丰富的对话——他/她帮你梳理内在的声音，你帮他/她看见自己的完整性。但你也可能因为他/她的专注而感到压力，他/她可能因为你的复杂性而感到疲惫。相处之道：让他/她知道你不需要被完全理解，只需要被看见。你也不试图改变他/她，而是欣赏他/她的执着。',
+                                B: '<strong>【深渊调和者】×【守夜人】</strong><br>你内心住着一个议会，他/她擅长观察而不介入。你们之间可以形成一种安静的默契——他/她倾听你所有的声音，却不评判，不干预。这是最安全的港湾。但你有时可能因为他/她的克制而感到疏离。相处之道：偶尔邀请他/她进入你的内心，也学会倾听他/她的沉默。沉默也是一种声音。',
+                                C: '<strong>【深渊调和者】×【沉睡者】</strong><br>你内心住着一个议会，他/她代表着其中最单纯的声音。你会被他/她的纯粹打动，因为那是你内心深处最渴望的宁静；他/她会被你的复杂性吸引，因为那正是他/她未曾探索的世界。相处之道：你带他/她探索世界，他/她带你回到简单。你们可以成为彼此的向导。',
+                                D: '<strong>【深渊调和者】×【门外的访客】</strong><br>你内心住着一个议会，他/她永远站在门外倾听。你会被他/她的自由打动，因为那是你内心所有声音都渴望的状态；他/她会被你的丰富吸引，因为每一个声音都像一扇不同的门。相处之道：让他/她成为你所有声音的倾听者，你成为他/她偶尔想要停留的理由。你们可以一起探索“门口”也是一种存在方式。',
+                                E: '<strong>【深渊调和者】×【深渊调和者】</strong><br>你们内心都住着一个议会。这是一场两个议会的对话，可能产生最复杂的共鸣，也可能爆发最激烈的冲突。你们能深刻理解彼此的多元与矛盾，因为你们都是这样。但危险在于：可能陷入“谁的议会更丰富”的竞赛，或者因为太过理解而失去新鲜感。相处之道：不必试图整合对方，只需欣赏对方的存在。让两个议会偶尔开个联席会议，但大部分时候各自独立。你们都是完整的，所以你们不需要彼此来完整自己——这才是最深的自由。'
+                            }
+                        }
+                    };
+
+                    return results[typeKey] || results['A'];
+                }
+            },
+            methods: {
+                startTest() {
+                    this.currentPage = 'test';
+                    this.currentQuestionIndex = 1;
+                },
+                selectOption(value) {
+                    this.$set(this.answers, this.currentQuestionIndex - 1, value);
+                },
+                nextQuestion() {
+                    if (!this.answers[this.currentQuestionIndex - 1]) {
+                        alert('请选择一个选项');
+                        return;
+                    }
+                    if (this.currentQuestionIndex === this.questions.length) {
+                        this.currentPage = 'result';
+                    } else {
+                        this.currentQuestionIndex++;
+                    }
+                },
+                prevQuestion() {
+                    if (this.currentQuestionIndex > 1) {
+                        this.currentQuestionIndex--;
+                    }
+                },
+                resetTest() {
+                    this.currentPage = 'cover';
+                    this.currentQuestionIndex = 1;
+                    this.answers = Array(18).fill('');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
